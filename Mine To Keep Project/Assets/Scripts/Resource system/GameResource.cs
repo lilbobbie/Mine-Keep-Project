@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class GameResource
 {
-    public ResourceType type { get; private set; }
+    public ResourceType Type { get; private set; }
 
-    public int amount { get; private set; }
+    public int Amount { get; private set; }
 
     public GameResource(ResourceType type, int amount)
     {
-        this.type = type;
-        this.amount = amount;
+        this.Type = type;
+        this.Amount = amount;
     }
 }
 
 
 public enum ResourceType
 {
-    Wood,
-    Timber,
-    Rock,
-    Stone,
-    Coal,
-    IronOre,
-    Iron
+    WOOD,
+    TIMBER,
+    ROCK,
+    STONE,
+    COAL,
+    IRONORE,
+    IRON
 }

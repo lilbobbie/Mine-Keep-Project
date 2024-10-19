@@ -6,26 +6,26 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     [SerializeField]
-    private Dictionary<ResourceType, int> resourceDictionary = new Dictionary<ResourceType, int>();
+    private Dictionary<ResourceType, int> _resourceDictionary = new Dictionary<ResourceType, int>();
 
     [SerializeField]
-    private ResourcePresenter presenter;
+    private ResourcePresenter _presenter;
 
-    public static ResourceManager instance;
+    public static ResourceManager Instance;
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {
-            Destroy(instance);
+            Destroy(Instance);
         }
 
         foreach (ResourceType resourceType in Enum.GetValues(typeof(ResourceType)))
         {
-            resourceDictionary.Add(resourceType, 0);
+            _resourceDictionary.Add(resourceType, 0);
             GameResource resource = new GameResource(resourceType, 1);
             AddResource(resource);
             RemoveResource(resource);
@@ -35,33 +35,33 @@ public class ResourceManager : MonoBehaviour
 
     public void AddResource(GameResource resource)
     {
-        ResourceType type = resource.type;
+        ResourceType type = resource.Type;
 
-        resourceDictionary[type] += resource.amount;
+        _resourceDictionary[type] += resource.Amount;
 
-        Debug.Log($"GameResource {resource.amount} {resource.type} added");
-        Debug.Log($"Total amount: {resourceDictionary[type]}");
-        presenter.UpdateResourceDisplay(type);
+        Debug.Log($"GameResource {resource.Amount} {resource.Type} added");
+        Debug.Log($"Total amount: {_resourceDictionary[type]}");
+        _presenter.UpdateResourceDisplay(type);
     }
 
     public void RemoveResource(GameResource resource)
     {
-        ResourceType type = resource.type;
+        ResourceType type = resource.Type;
 
-        resourceDictionary[type] -= resource.amount;
+        _resourceDictionary[type] -= resource.Amount;
 
-        if(resourceDictionary[type] < 0)
+        if(_resourceDictionary[type] < 0)
         {
-            resourceDictionary[type] = 0;
+            _resourceDictionary[type] = 0;
         }
 
-        Debug.Log($"GameResource {resource.amount} {resource.type} removed");
-        Debug.Log($"Total amount: {resourceDictionary[type]}");
-        presenter.UpdateResourceDisplay(type);
+        Debug.Log($"GameResource {resource.Amount} {resource.Type} removed");
+        Debug.Log($"Total amount: {_resourceDictionary[type]}");
+        _presenter.UpdateResourceDisplay(type);
     }
 
     public int GetResourceAmount(ResourceType type)
     {
-        return resourceDictionary[type];
+        return _resourceDictionary[type];
     }
 }

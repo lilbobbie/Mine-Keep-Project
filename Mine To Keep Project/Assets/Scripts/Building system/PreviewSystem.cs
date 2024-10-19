@@ -3,43 +3,43 @@ using UnityEngine;
 public class PreviewSystem : MonoBehaviour
 {
     [SerializeField]
-    private float previewYOffset = 0.06f;
+    private float _previewYOffset = 0.06f;
     [SerializeField]
-    private bool isTileable = false;
+    private bool _isTileable = false;
 
     [SerializeField]
-    private GameObject cellIndicator;
-    private GameObject previewObject;
+    private GameObject _cellIndicator;
+    private GameObject _previewObject;
 
     [SerializeField]
-    private Material previewMaterialPrefab;
-    private Material previewMaterialInstance;
+    private Material _previewMaterialPrefab;
+    private Material _previewMaterialInstance;
 
-    private Renderer cellIndicatorRenderer;
+    private Renderer _cellIndicatorRenderer;
 
     private void Start()
     {
-        previewMaterialInstance = new Material(previewMaterialPrefab);
-        cellIndicator.SetActive(false);
-        cellIndicatorRenderer = cellIndicator.GetComponentInChildren<Renderer>();
+        _previewMaterialInstance = new Material(_previewMaterialPrefab);
+        _cellIndicator.SetActive(false);
+        _cellIndicatorRenderer = _cellIndicator.GetComponentInChildren<Renderer>();
     }
 
     public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)
     {
-        previewObject = Instantiate(prefab);
-        PreparePreview(previewObject);
+        _previewObject = Instantiate(prefab);
+        PreparePreview(_previewObject);
         PrepareCursor(size);
-        cellIndicator.SetActive(true);
+        _cellIndicator.SetActive(true);
     }
 
     private void PrepareCursor(Vector2Int size)
     {
         if(size.x > 0 || size.y > 0)
         {
-            cellIndicator.transform.localScale = new Vector3(size.x, 1, size.y);
-            if (isTileable)
+            _cellIndicator.transform.localScale = new Vector3(size.x, 1, size.y);
+            if (_isTileable)
             {
-                cellIndicatorRenderer.material.mainTextureScale = size;
+                _cellIndicatorRenderer.material.mainTextureScale = size;
             }
         }
     }
@@ -52,7 +52,7 @@ public class PreviewSystem : MonoBehaviour
             Material[] materials = renderer.materials;
             for (int i = 0; i < materials.Length; i++)
             {
-                materials[i] = previewMaterialInstance;
+                materials[i] = _previewMaterialInstance;
             }
             renderer.materials = materials;
         }
@@ -60,16 +60,16 @@ public class PreviewSystem : MonoBehaviour
 
     public void StopShowingPlacementPreview()
     {
-        cellIndicator.SetActive(false);
-        if(previewObject != null)
+        _cellIndicator.SetActive(false);
+        if(_previewObject != null)
         {
-            Destroy(previewObject);
+            Destroy(_previewObject);
         }
     }
 
     public void UpdatePosition(Vector3 position, bool isValid)
     {
-        if(previewObject != null)
+        if(_previewObject != null)
         {
             MovePreview(position);
             ApplyFeedbackToPreview(isValid);
@@ -84,7 +84,7 @@ public class PreviewSystem : MonoBehaviour
         Color c = isValid ? Color.white : Color.red;
 
         c.a = 0.7f;
-        previewMaterialInstance.color = c;
+        _previewMaterialInstance.color = c;
     }
 
     private void ApplyFeedbackToCursor(bool isValid)
@@ -92,22 +92,22 @@ public class PreviewSystem : MonoBehaviour
         Color c = isValid ? Color.white : Color.red;
 
         c.a = 0.5f;
-        cellIndicatorRenderer.material.color = c;
+        _cellIndicatorRenderer.material.color = c;
     }
 
     private void MoveCursor(Vector3 position)
     {
-        cellIndicator.transform.position = position;
+        _cellIndicator.transform.position = position;
     }
 
     private void MovePreview(Vector3 position)
     {
-        previewObject.transform.position = new Vector3(position.x, position.y + previewYOffset, position.z);
+        _previewObject.transform.position = new Vector3(position.x, position.y + _previewYOffset, position.z);
     }
 
     public void StartShowingRemovePreview()
     {
-        cellIndicator.SetActive(true);
+        _cellIndicator.SetActive(true);
         PrepareCursor(Vector2Int.one);
         ApplyFeedbackToCursor(false);
     }

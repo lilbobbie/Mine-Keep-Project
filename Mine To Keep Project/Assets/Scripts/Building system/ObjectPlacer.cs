@@ -7,33 +7,33 @@ using UnityEngine;
 public class ObjectPlacer : MonoBehaviour
 {
     [SerializeField]
-    private List<GameObject> placedStructures = new List<GameObject>();
+    private List<GameObject> _placedStructures = new List<GameObject>();
 
     public int PlaceObject(GameObject prefab, Vector3 position)
     {
         int index = 0;
         GameObject newObject = Instantiate(prefab);
         newObject.transform.position = position;
-        for (index = 0; index < placedStructures.Count; index++)
+        for (index = 0; index < _placedStructures.Count; index++)
         {
-            if (placedStructures[index] == null)
+            if (_placedStructures[index] == null)
             {
-                placedStructures[index] = newObject;
+                _placedStructures[index] = newObject;
                 break;
             }
         }
-        if (index == placedStructures.Count)
-            placedStructures.Add(newObject);
+        if (index == _placedStructures.Count)
+            _placedStructures.Add(newObject);
         return index;
     }
 
     internal void RemoveObjectAt(int gameObjectIndex)
     {
-        if(placedStructures.Count <= gameObjectIndex || placedStructures[gameObjectIndex] == null)
+        if(_placedStructures.Count <= gameObjectIndex || _placedStructures[gameObjectIndex] == null)
         {
             return;
         }
-        Destroy(placedStructures[gameObjectIndex]);
-        placedStructures[gameObjectIndex] = null;
+        Destroy(_placedStructures[gameObjectIndex]);
+        _placedStructures[gameObjectIndex] = null;
     }
 }

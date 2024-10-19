@@ -7,11 +7,11 @@ using UnityEngine;
 [CreateAssetMenu]
 public class ObjectsDatabaseSO : ScriptableObject
 {
-    public List<ObjectData> objectsData;
+    public List<ObjectData> ObjectsData;
 
     public ObjectData GetObjectByID(int id)
     {
-        foreach (ObjectData obj in objectsData)
+        foreach (ObjectData obj in ObjectsData)
         {
             if (id == obj.ID)
             {
@@ -37,10 +37,10 @@ public class ObjectData
     public Vector2Int Size { get; private set; } = Vector2Int.one;
 
     [field: SerializeField]
-    public ResourceType[] resourceCost{ get; private set;}
+    public ResourceType[] ResourceCost{ get; private set;}
 
     [field: SerializeField]
-    public int[] resourceCostAmount { get; private set; }
+    public int[] ResourceCostAmount { get; private set; }
 
     [field: SerializeField]
     public GameObject Prefab { get; private set; }

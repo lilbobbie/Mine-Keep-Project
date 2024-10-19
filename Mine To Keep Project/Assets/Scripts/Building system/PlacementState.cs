@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class PlacementState : IBuildingState
 {
-    private int selectedObjectIndex = -1;
+    private int _selectedObjectIndex = -1;
     int ID;
     Grid grid;
     PreviewSystem previewSystem;
@@ -28,12 +28,12 @@ public class PlacementState : IBuildingState
         this.structureData = structureData;
         this.objectPlacer = objectPlacer;
 
-        selectedObjectIndex = database.objectsData.FindIndex(data => data.ID == ID);
-        if (selectedObjectIndex > -1)
+        _selectedObjectIndex = database.ObjectsData.FindIndex(data => data.ID == ID);
+        if (_selectedObjectIndex > -1)
         {
             previewSystem.StartShowingPlacementPreview(
-                database.objectsData[selectedObjectIndex].Prefab,
-                database.objectsData[selectedObjectIndex].Size);
+                database.ObjectsData[_selectedObjectIndex].Prefab,
+                database.ObjectsData[_selectedObjectIndex].Size);
         }
         else
         {
@@ -54,27 +54,27 @@ public class PlacementState : IBuildingState
     public void OnAction(Vector3Int gridPosition)
     {
         //check if placement valid
-        bool isPlacementValid = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+        bool isPlacementValid = CheckPlacementValidity(gridPosition, _selectedObjectIndex);
         if (isPlacementValid == false)
         {
             return;
         }
 
-        int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
+        int index = objectPlacer.PlaceObject(database.ObjectsData[_selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
 
         //GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : structureData;
         GridData selectedData = structureData;
         selectedData.AddObjectAt(gridPosition,
-            database.objectsData[selectedObjectIndex].Size,
-            database.objectsData[selectedObjectIndex].ID,
+            database.ObjectsData[_selectedObjectIndex].Size,
+            database.ObjectsData[_selectedObjectIndex].ID,
             index);
 
         previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
 
-        for (int i = 0; i < database.GetObjectByID(ID).resourceCost.Length; i++)
+        for (int i = 0; i < database.GetObjectByID(ID).ResourceCost.Length; i++)
         {
-            GameResource resource = new GameResource(database.GetObjectByID(ID).resourceCost[i], database.GetObjectByID(ID).resourceCostAmount[i]);
-            ResourceManager.instance.RemoveResource(resource);
+            GameResource resource = new GameResource(database.GetObjectByID(ID).ResourceCost[i], database.GetObjectByID(ID).ResourceCostAmount[i]);
+            ResourceManager.Instance.RemoveResource(resource);
         }
     }
 
@@ -83,12 +83,12 @@ public class PlacementState : IBuildingState
         //GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : structureData;
         GridData selectedData = structureData;
 
-        return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
+        return selectedData.CanPlaceObjectAt(gridPosition, database.ObjectsData[selectedObjectIndex].Size);
     }
 
     public void UpdateState(Vector3Int gridPosition)
     {
-        bool isPlacementValid = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+        bool isPlacementValid = CheckPlacementValidity(gridPosition, _selectedObjectIndex);
 
         previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), isPlacementValid);
     }

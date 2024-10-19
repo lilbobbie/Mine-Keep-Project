@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RemovingState : IBuildingState
 {
-    private int gameObjectIndex = -1;
+    private int _gameObjectIndex = -1;
     int ID;
     ObjectsDatabaseSO database;
     Grid grid;
@@ -50,20 +50,20 @@ public class RemovingState : IBuildingState
         }
         else
         {
-            gameObjectIndex = selectedData.GetRepresentationIndex(gridPosition);
-            if(gameObjectIndex == -1)
+            _gameObjectIndex = selectedData.GetRepresentationIndex(gridPosition);
+            if(_gameObjectIndex == -1)
             {
                 return;
             }
-            for (int i = 0; i < database.GetObjectByID(selectedData.GetObjectIDAt(gridPosition)).resourceCost.Length; i++)
+            for (int i = 0; i < database.GetObjectByID(selectedData.GetObjectIDAt(gridPosition)).ResourceCost.Length; i++)
             {
-                GameResource resource = new GameResource(database.GetObjectByID(selectedData.GetObjectIDAt(gridPosition)).resourceCost[i],
-                                                        database.GetObjectByID(selectedData.GetObjectIDAt(gridPosition)).resourceCostAmount[i]);
-                ResourceManager.instance.AddResource(resource);
+                GameResource resource = new GameResource(database.GetObjectByID(selectedData.GetObjectIDAt(gridPosition)).ResourceCost[i],
+                                                        database.GetObjectByID(selectedData.GetObjectIDAt(gridPosition)).ResourceCostAmount[i]);
+                ResourceManager.Instance.AddResource(resource);
             }
 
             selectedData.RemoveObjectAt(gridPosition);
-            objectPlacer.RemoveObjectAt(gameObjectIndex);
+            objectPlacer.RemoveObjectAt(_gameObjectIndex);
         }
         Vector3 cellPosition = grid.CellToWorld(gridPosition);
         previewSystem.UpdatePosition(cellPosition, CheckIfSelectionIsValid(gridPosition));

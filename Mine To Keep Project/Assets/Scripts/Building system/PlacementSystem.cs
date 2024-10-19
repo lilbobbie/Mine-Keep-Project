@@ -6,61 +6,61 @@ using UnityEngine;
 public class PlacementSystem : MonoBehaviour
 {
     [SerializeField]
-    private InputManager inputManager;
+    private InputManager _inputManager;
 
     [SerializeField]
-    private Grid grid;
+    private Grid _grid;
 
     [SerializeField]
-    private ObjectsDatabaseSO database;
+    private ObjectsDatabaseSO _database;
 
     [SerializeField]
-    private GameObject gridVisualization;
+    private GameObject _gridVisualization;
     [SerializeField]
-    private GameObject placementUI;
+    private GameObject _placementUI;
 
-    private GridData structureData;
-
-    [SerializeField]
-    private PreviewSystem preview;
-
-    private Vector3Int lastDetectedPosition = Vector3Int.zero;
+    private GridData _structureData;
 
     [SerializeField]
-    private ObjectPlacer objectPlacer;
+    private PreviewSystem _preview;
 
-    IBuildingState buildingState;
+    private Vector3Int _lastDetectedPosition = Vector3Int.zero;
+
+    [SerializeField]
+    private ObjectPlacer _objectPlacer;
+
+    IBuildingState _buildingState;
 
     private void Awake()
     {
-        inputManager.OnActivate += ToggleUI;
+        _inputManager.OnActivate += ToggleUI;
     }
 
     private void Start()
     {
         StopPlacement();
-        structureData = new();
-        structureData.Initialize();
+        _structureData = new();
+        _structureData.Initialize();
     }
 
     private void ToggleUI()
     {
-        if (placementUI.activeSelf)
+        if (_placementUI.activeSelf)
         {
-            placementUI.SetActive(false);
+            _placementUI.SetActive(false);
         }
         else
         {
-            placementUI.SetActive(true);
+            _placementUI.SetActive(true);
         }
     }
 
     private bool HasEnoughResources(int objectID)
     {
-        for (int i = 0; i < database.GetObjectByID(objectID).resourceCostAmount.Length; i++)
+        for (int i = 0; i < _database.GetObjectByID(objectID).ResourceCostAmount.Length; i++)
         {
-            if (database.GetObjectByID(objectID).resourceCostAmount[i] >
-                ResourceManager.instance.GetResourceAmount(database.GetObjectByID(objectID).resourceCost[i]))
+            if (_database.GetObjectByID(objectID).ResourceCostAmount[i] >
+                ResourceManager.Instance.GetResourceAmount(_database.GetObjectByID(objectID).ResourceCost[i]))
             {
                 Debug.Log("Not enough resources!");
                 return false;
@@ -78,28 +78,28 @@ public class PlacementSystem : MonoBehaviour
         }
 
         StopPlacement();
-        gridVisualization.SetActive(true);
+        _gridVisualization.SetActive(true);
 
-        buildingState = new PlacementState(objectID, grid, preview, database, structureData, objectPlacer);
+        _buildingState = new PlacementState(objectID, _grid, _preview, _database, _structureData, _objectPlacer);
 
-        inputManager.OnClicked += PlaceStructure;
-        inputManager.OnExit += StopPlacement;
+        _inputManager.OnClicked += PlaceStructure;
+        _inputManager.OnExit += StopPlacement;
     }
 
     public void StartRemoving()
     {
         StopPlacement();
-        gridVisualization.SetActive(true);
+        _gridVisualization.SetActive(true);
 
-        buildingState = new RemovingState(grid, preview, database, structureData, objectPlacer);
+        _buildingState = new RemovingState(_grid, _preview, _database, _structureData, _objectPlacer);
 
-        inputManager.OnClicked += PlaceStructure;
-        inputManager.OnExit += StopPlacement;
+        _inputManager.OnClicked += PlaceStructure;
+        _inputManager.OnExit += StopPlacement;
     }
 
     private void PlaceStructure()
     {
-        if (inputManager.IsPointerOverUI())
+        if (_inputManager.IsPointerOverUI())
         {
             return;
         }
@@ -120,15 +120,15 @@ public class PlacementSystem : MonoBehaviour
         //}
 
         //calculate placement position
-        Vector3 mousePosition = inputManager.GetSelectedMapPosition();
-        Vector3Int gridPosition = grid.WorldToCell(mousePosition);
+        Vector3 mousePosition = _inputManager.GetSelectedMapPosition();
+        Vector3Int gridPosition = _grid.WorldToCell(mousePosition);
 
-        buildingState.OnAction(gridPosition);
+        _buildingState.OnAction(gridPosition);
 
         //check if resources available
-        if (buildingState is PlacementState)
+        if (_buildingState is PlacementState)
         {
-            if (!HasEnoughResources(buildingState.GetID()))
+            if (!HasEnoughResources(_buildingState.GetID()))
             {
                 StopPlacement();
             }
@@ -137,44 +137,44 @@ public class PlacementSystem : MonoBehaviour
 
     private void StopPlacement()
     {
-        if(buildingState == null)
+        if(_buildingState == null)
         {
             return;
         }
-        gridVisualization.SetActive(false);
-        buildingState.EndState();
-        inputManager.OnClicked -= PlaceStructure;
-        inputManager.OnExit -= StopPlacement;
+        _gridVisualization.SetActive(false);
+        _buildingState.EndState();
+        _inputManager.OnClicked -= PlaceStructure;
+        _inputManager.OnExit -= StopPlacement;
 
-        lastDetectedPosition = Vector3Int.zero;
+        _lastDetectedPosition = Vector3Int.zero;
 
-        buildingState = null;
+        _buildingState = null;
     }
 
     public void PlacementExitButtonHelper()
     {
         //if still building -> exit building; else -> exit UI
-        if (gridVisualization.activeSelf)
+        if (_gridVisualization.activeSelf)
         {
             StopPlacement();
             return;
         }
-        placementUI.SetActive(false);
+        _placementUI.SetActive(false);
     }
 
     private void Update()
     {
-        if(buildingState == null)
+        if(_buildingState == null)
         {
             return;
         }
-        Vector3 mousePosition = inputManager.GetSelectedMapPosition();
-        Vector3Int gridPosition = grid.WorldToCell(mousePosition);
+        Vector3 mousePosition = _inputManager.GetSelectedMapPosition();
+        Vector3Int gridPosition = _grid.WorldToCell(mousePosition);
 
-        if(lastDetectedPosition != gridPosition)
+        if(_lastDetectedPosition != gridPosition)
         {
-            buildingState.UpdateState(gridPosition);
-            lastDetectedPosition = gridPosition;
+            _buildingState.UpdateState(gridPosition);
+            _lastDetectedPosition = gridPosition;
         }
     }
 }
