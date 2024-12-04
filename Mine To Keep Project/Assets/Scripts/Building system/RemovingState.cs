@@ -59,7 +59,7 @@ public class RemovingState : IBuildingState
             {
                 GameResource resource = new GameResource(database.GetObjectByID(selectedData.GetObjectIDAt(gridPosition)).ResourceCost[i],
                                                         database.GetObjectByID(selectedData.GetObjectIDAt(gridPosition)).ResourceCostAmount[i]);
-                ResourceManager.Instance.AddResource(resource);
+                ResourceController.Instance.AddResource(resource);
             }
 
             selectedData.RemoveObjectAt(gridPosition);

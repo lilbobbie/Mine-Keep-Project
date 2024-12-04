@@ -41,6 +41,16 @@ public class PlacementSystem : MonoBehaviour
         StopPlacement();
         _structureData = new();
         _structureData.Initialize();
+
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        foreach (var item in _database.ObjectsDataList)
+        {
+
+        }
     }
 
     private void ToggleUI()
@@ -60,7 +70,7 @@ public class PlacementSystem : MonoBehaviour
         for (int i = 0; i < _database.GetObjectByID(objectID).ResourceCostAmount.Length; i++)
         {
             if (_database.GetObjectByID(objectID).ResourceCostAmount[i] >
-                ResourceManager.Instance.GetResourceAmount(_database.GetObjectByID(objectID).ResourceCost[i]))
+                ResourceController.Instance.GetResourceAmount(_database.GetObjectByID(objectID).ResourceCost[i]))
             {
                 Debug.Log("Not enough resources!");
                 return false;

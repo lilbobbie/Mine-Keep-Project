@@ -8,7 +8,20 @@ using UnityEngine;
 public class ResourcePresenter : MonoBehaviour
 {
     [SerializeField]
-    private List<TMP_Text> _UIDisplays;
+    private GameObject _UIObject;
+
+    private List<TMP_Text> _UIDisplays = new();
+
+    private void Start()
+    {
+        TMP_Text[] UIText = _UIObject.GetComponentsInChildren<TMP_Text>(); 
+        foreach (TMP_Text UIDisplay in UIText)
+        {
+            if (UIDisplay.transform.parent != _UIObject.transform)
+                continue;
+            _UIDisplays.Add(UIDisplay);
+        }
+    }
 
     public void UpdateResourceDisplay(ResourceType type)
     {
@@ -17,9 +30,9 @@ public class ResourcePresenter : MonoBehaviour
         foreach (var text in _UIDisplays)
         {
             // for this to work make sure UI resource counters are named like above; "Type Counter"; ie: "Timber Counter"
-            if (stringName == text.gameObject.name)
+            if (stringName.ToLower() == text.gameObject.name.ToLower())
             {
-                text.text = type.ToString() + ": " + ResourceManager.Instance.GetResourceAmount(type);
+                text.text = type.ToString() + ": " + ResourceController.Instance.GetResourceAmount(type);
             }
         }
     }

@@ -1,17 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceManager : MonoBehaviour
+[RequireComponent(typeof(ResourceController))]
+public class ResourceController : MonoBehaviour
 {
-    [SerializeField]
-    private Dictionary<ResourceType, int> _resourceDictionary = new Dictionary<ResourceType, int>();
-
-    [SerializeField]
+    private Dictionary<ResourceType, int> _resourceDictionary = new Dictionary<ResourceType, int>(); // Change this to save file later
     private ResourcePresenter _presenter;
 
-    public static ResourceManager Instance;
+    public static ResourceController Instance;
     private void Awake()
     {
         if (Instance == null)
@@ -21,6 +18,11 @@ public class ResourceManager : MonoBehaviour
         else
         {
             Destroy(Instance);
+        }
+
+        if (_presenter == null)
+        {
+            _presenter = GetComponent<ResourcePresenter>();
         }
 
         foreach (ResourceType resourceType in Enum.GetValues(typeof(ResourceType)))

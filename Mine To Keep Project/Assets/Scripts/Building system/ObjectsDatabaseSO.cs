@@ -7,11 +7,11 @@ using UnityEngine;
 [CreateAssetMenu]
 public class ObjectsDatabaseSO : ScriptableObject
 {
-    public List<ObjectData> ObjectsData;
+    public List<ObjectData> ObjectsDataList;
 
     public ObjectData GetObjectByID(int id)
     {
-        foreach (ObjectData obj in ObjectsData)
+        foreach (ObjectData obj in ObjectsDataList)
         {
             if (id == obj.ID)
             {

@@ -12,32 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4817b8b77fae54b47ae7ae470e274f4b, type: 3}
   m_Name: Object Database
   m_EditorClassIdentifier: 
-  objectsData:
-  - <Name>k__BackingField: Floor
-    <ID>k__BackingField: 0
-    <Size>k__BackingField: {x: 1, y: 1}
-    <resourceCost>k__BackingField: 03000000
-    <resourceCostAmount>k__BackingField: 01000000
-    <Prefab>k__BackingField: {fileID: 6314249656518218133, guid: 89fbad925304bb14798e8e773d7baf95,
-      type: 3}
-  - <Name>k__BackingField: Building1
-    <ID>k__BackingField: 1
-    <Size>k__BackingField: {x: 2, y: 2}
-    <resourceCost>k__BackingField: 01000000
-    <resourceCostAmount>k__BackingField: 05000000
-    <Prefab>k__BackingField: {fileID: 1400155988320323243, guid: 16cc8dab245f94240b3b3d3f5f8ea821,
-      type: 3}
-  - <Name>k__BackingField: Building2
-    <ID>k__BackingField: 2
-    <Size>k__BackingField: {x: 2, y: 2}
-    <resourceCost>k__BackingField: 0100000003000000
-    <resourceCostAmount>k__BackingField: 0a00000002000000
-    <Prefab>k__BackingField: {fileID: 3706913370679870836, guid: 770c39398cdf7b5448a5fa40103e0a2e,
-      type: 3}
-  - <Name>k__BackingField: Table
-    <ID>k__BackingField: 3
-    <Size>k__BackingField: {x: 2, y: 1}
-    <resourceCost>k__BackingField: 010000000300000006000000
-    <resourceCostAmount>k__BackingField: 050000000500000005000000
-    <Prefab>k__BackingField: {fileID: 7004724042039146915, guid: db9d29fbe2f3fc640adccb0b0bc7de02,
-      type: 3}
+  ObjectsDataList: []
